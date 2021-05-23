@@ -24,7 +24,7 @@ public class FirebaseManager {
         BlobId blobId = BlobId.of("ecommerce-93f42.appspot.com", fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
 
-        String jsonPath = System.getProperty("user.dir") + "\\src\\main\\java\\com\\akgarg\\ecommerce\\firebase\\" +
+        String jsonPath = System.getProperty("user.dir") + "//src//main//java//com//akgarg//ecommerce//firebase//" +
                 "ecommerce-93f42-firebase-adminsdk-pwf1j-9094406a7d.json";
         Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath));
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
@@ -59,7 +59,7 @@ public class FirebaseManager {
         boolean result = false;
 
         String fileName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('?'));
-        String jsonPath = System.getProperty("user.dir") + "\\src\\main\\java\\com\\akgarg\\ecommerce\\firebase\\" +
+        String jsonPath = System.getProperty("user.dir") + "//src//main//java//com//akgarg//ecommerce//firebase//" +
                 "ecommerce-93f42-firebase-adminsdk-pwf1j-9094406a7d.json";
 
         try {
