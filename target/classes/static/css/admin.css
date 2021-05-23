@@ -1,0 +1,481 @@
+/*admin panel css*/
+* {
+    scroll-behavior: smooth;
+}
+
+html {
+    background-color: #03203C;
+    scroll-behavior: smooth;
+}
+
+.admin-dashboard-sidebar {
+    margin: 0;
+    padding: 0;
+    width: 18%;
+    background-color: #1a1a1a;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.admin-dashboard-sidebar a {
+    display: block;
+    color: #fff;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.admin-dashboard-sidebar a.active {
+    background-color: #555;
+    color: #fff1f9;
+}
+
+.admin-dashboard-sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+.admin-dashboard-bg {
+    background-color: #03203C;
+}
+
+.admin-dashboard-content {
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 18%;
+    right: 0;
+    padding: 5px;
+}
+
+.admin-dashboard-box {
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /*border: 2px solid red;*/
+    height: 260px;
+}
+
+.admin-card {
+    height: 225px;
+    width: 225px;
+    margin-right: 15px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: height 0.2s linear, width 0.2s linear;
+}
+
+.admin-card:hover {
+    cursor: pointer;
+    height: 260px;
+    width: 230px;
+    transition: height 0.2s linear, width 0.2s linear;
+}
+
+.admin-card h1, .admin-card h2 {
+    text-align: center;
+    color: #fff;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+.signup-modal {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: 100%;
+    transform: translate(-50%, -50%) !important;
+    border-radius: 20px !important;
+}
+
+.signup-modal-header {
+    background-color: #3498db !important;
+}
+
+.admin-dashboard-manage-categories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.categories-card {
+    border-radius: 10px;
+    padding: 10px;
+    width: 300px;
+    height: 450px;
+    margin: 5px 10px 5px 10px;
+    background-color: #333333;
+    color: #fff;
+}
+
+.delivered-order-card {
+    border-radius: 10px;
+    padding: 10px;
+    width: 300px;
+    height: 350px;
+    margin: 5px 10px 5px 10px;
+    background-color: #ac75ef;
+    color: #fff;
+}
+
+.pending-del-card {
+    border-radius: 10px;
+    padding: 10px;
+    width: 300px;
+    height: 300px;
+    margin: 5px 10px 5px 10px;
+    background-color: #333333;
+    color: #fff;
+}
+
+.categories-card img {
+    width: auto;
+    height: 200px;
+}
+
+.category-heading {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.category-heading-content {
+    font-size: 25px;
+}
+
+.product-heading {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.product-heading-content {
+    font-size: 18px;
+}
+
+.product-search, .order-search {
+    margin-left: 20%;
+    margin-right: 20%;
+    height: auto;
+    width: auto;
+    display: grid;
+    grid-template-columns: auto 10%;
+}
+
+.update-admin-profile-card {
+    margin: 2% 10% 5% 10%;
+    width: 75%;
+}
+
+.admin-profile-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.admin-mg-pd-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.mg-pd-card-img {
+    width: auto !important;
+    height: 185px !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin: auto;
+}
+
+.update-prod-btn {
+    width: 100% !important;
+    border-radius: 16px !important;
+    margin-top: 10px;
+}
+
+.delete-prod-btn {
+    width: 100% !important;
+    border-radius: 16px !important;
+    margin-top: 5px;
+}
+
+.update-order-btn, .cancel-order-btn {
+    width: 100%;
+    border-radius: 16px;
+}
+
+@media only screen and (max-width: 950px) {
+    .admin-card h1, .admin-card h2 {
+        font-size: 25px;
+    }
+
+    .admin-dashboard-sidebar {
+        width: 25%;
+    }
+
+    .admin-dashboard-manage-categories {
+        left: 25%;
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+    }
+
+    .admin-dashboard-manage-products {
+        left: 25%;
+        display: flex;
+        flex-direction: row;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .categories-card {
+        width: 250px;
+        height: 450px;
+    }
+
+    .admin-dashboard-content {
+        left: 25%;
+    }
+
+    .mg-pd-card-img {
+        height: 155px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .admin-card h1, .admin-card h2 {
+        font-size: 22px;
+    }
+
+    .category-heading, .product-heading {
+        font-size: 14px;
+    }
+
+    .category-heading-content, .product-heading-content {
+        font-size: 14px;
+    }
+
+    .admin-profile-picture {
+        width: 175px;
+        height: 175px;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .admin-card {
+        height: 180px;
+    }
+
+    .admin-card h1, .admin-card h2 {
+        font-size: 20px;
+    }
+
+    .admin-card:hover {
+        height: 215px;
+    }
+
+    .admin-dashboard-box {
+        margin-top: -10px;
+    }
+
+    .admin-profile-picture {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .admin-card h1, .admin-card h2 {
+        font-size: 18px;
+    }
+
+    .category-heading, .product-heading {
+        font-size: 14px;
+    }
+
+    .category-heading-content, .product-heading-content {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .admin-dashboard-sidebar {
+        width: 30%;
+    }
+
+    .admin-dashboard-content {
+        left: 30%;
+    }
+
+    .admin-dashboard-sidebar a {
+        font-size: 16px;
+    }
+
+    .admin-card h1, .admin-card h2 {
+        font-size: 18px;
+    }
+
+    .admin-dashboard-box {
+        height: 240px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+
+    .admin-card {
+        height: 160px;
+        margin-bottom: 20px;
+    }
+
+    .admin-db-od-1 {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .admin-db-od-2 {
+        position: relative;
+        margin-top: 480px;
+    }
+
+    .admin-profile-picture {
+        width: 125px;
+        height: 125px;
+    }
+
+    .pending-del-card {
+        width: 250px !important;
+    }
+
+    .update-order-btn {
+        margin-top: -10px;
+    }
+
+    .cancel-order-btn {
+        margin-top: 5px;
+    }
+
+    .delivered-order-card {
+        width: 275px !important;
+        height: 300px !important;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .sidebar a {
+        text-align: center;
+        float: none;
+    }
+
+    .category-heading, .product-heading {
+        font-size: 14px;
+    }
+
+    .category-heading-content, .product-heading-content {
+        font-size: 14px;
+    }
+
+    .admin-profile-picture {
+        width: 100px;
+        height: 100px;
+    }
+
+    .mg-pd-card-img {
+        height: 137px !important;
+    }
+
+    .delivered-order-card {
+        width: 250px !important;
+        height: 300px !important;
+    }
+
+    .admin-dashboard-content {
+        left: 35%;
+    }
+
+    .admin-dashboard-sidebar {
+        width: 35%;
+    }
+
+    .categories-card {
+        width: 225px !important;
+        height: 375px !important;
+    }
+
+    .categories-card img {
+        height: 160px !important;
+    }
+
+    .card-title {
+        font-size: 1rem !important;
+    }
+}

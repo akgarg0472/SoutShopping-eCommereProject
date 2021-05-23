@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="navbar">
+
+<body>
+<div th:if="!${isUserLoggedIn}">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">SoutShopping</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div class="product-search me-auto ms-auto navbar-search-div">
+                        <div class="form-outline" style="width: 100%">
+                            <input id="home-search-input" type="search" class="form-control"
+                                   placeholder="Search Product">
+                        </div>
+                    </div>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/cart">
+                            <i class="fa fa-shopping-cart"></i> Cart
+                            <span id="total-cart-items">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-link active" aria-current="page" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-link active" aria-current="page" href="/register">Register</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div th:if="${isUserLoggedIn}">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">SoutShopping</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div class="product-search me-auto ms-auto">
+                        <div class="form-outline" style="width: 100%">
+                            <input id="home-search-input" type="search" class="form-control"
+                                   placeholder="Search Product">
+                        </div>
+                    </div>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/cart">
+                            <i class="fa fa-shopping-cart"></i> My Cart
+                            <span id="total-cart-items">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link navbar-link active" aria-current="page" href="/user/dashboard"
+                           th:if="${isUserLoggedIn.name.length() > 20}"
+                           th:text="${isUserLoggedIn.name.substring(0,20)}"></a>
+                    <li class="nav-item">
+                        <a th:if="${loggedInUserRole.equals('ROLE_USER')}" class="nav-link navbar-link active"
+                           aria-current="page" href="/user/dashboard"
+                           th:text="${isUserLoggedIn.name}"></a>
+                        <a th:if="${loggedInUserRole.equals('ROLE_ADMIN')}" class="nav-link navbar-link active"
+                           aria-current="page" href="/admin/dashboard"
+                           th:text="${isUserLoggedIn.name}"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:if="${loggedInUserRole.equals('ROLE_USER')}" class="nav-link navbar-link active"
+                           aria-current="page" href="/user/logout">Logout</a>
+                        <a th:if="${loggedInUserRole.equals('ROLE_ADMIN')}" class="nav-link navbar-link active"
+                           aria-current="page" href="/admin/logout">Logout</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+
+</html>
