@@ -21,20 +21,29 @@ const navigate = (url) => {
 
 
 const addToCart = (cartProduct) => {
+    const productLoader = $("#product-loader");
+
     $.get("/checkout/isUserLoggedIn")
         .done((response) => {
             if (response === true) {
                 $.get("/checkout/isUserLoggedIn")
                     .done((resp) => {
                         if (resp === true) {
+                            productLoader.show();
                             $.post("/user/add-cart-item", cartProduct)
                                 .done((res) => {
+                                    productLoader.hide();
                                     if (res === true) {
+                                        productLoader.hide();
                                         updateCart();
                                         swal('Product added to cart');
                                     } else {
                                         swal('Unable to add to cart. Try again later');
                                     }
+                                })
+                                .fail(() => {
+                                    productLoader.hide();
+                                    swal("Error adding to the cart");
                                 })
                         }
                     })
@@ -83,16 +92,21 @@ const deleteCartOrder = (orderId) => {
 
 
 const buyProduct = (productToBuy) => {
+    const productLoader = $("#product-loader");
+
     $.get('/checkout/isUserLoggedIn')
         .done((response) => {
             if (response === true) {
+                productLoader.show();
                 $.post('/user/process-buy-product', productToBuy)
                     .done((resp) => {
+                        productLoader.hide();
                         if (resp === true) {
                             window.location = "/user/buy-product-checkout";
                         }
                     })
                     .fail(() => {
+                        productLoader.hide();
                         console.log("buy product failed");
                     })
             } else {
@@ -107,4 +121,5 @@ const buyProduct = (productToBuy) => {
 
 $(document).ready(() => {
     updateCart();
+    $("#product-loader").hide()
 })
