@@ -1,9 +1,11 @@
 package com.akgarg.ecommerce.controller;
 
 import com.akgarg.ecommerce.entity.Orders;
+import com.akgarg.ecommerce.entity.PaymentRecords;
 import com.akgarg.ecommerce.entity.User;
 import com.akgarg.ecommerce.helper.ShippingInfo;
 import com.akgarg.ecommerce.repository.OrdersRepository;
+import com.akgarg.ecommerce.repository.PaymentRecordsRepository;
 import com.akgarg.ecommerce.repository.ProductRepository;
 import com.akgarg.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +26,18 @@ public class CheckoutController {
     private final UserRepository userRepository;
     private final OrdersRepository ordersRepository;
     private final ProductRepository productRepository;
+    private final PaymentRecordsRepository paymentRecordsRepository;
 
 
     @Autowired
     public CheckoutController(UserRepository userRepository,
                               OrdersRepository ordersRepository,
-                              ProductRepository productRepository) {
+                              ProductRepository productRepository,
+                              PaymentRecordsRepository paymentRecordsRepository) {
         this.userRepository = userRepository;
         this.ordersRepository = ordersRepository;
         this.productRepository = productRepository;
+        this.paymentRecordsRepository = paymentRecordsRepository;
     }
 
 
@@ -95,7 +100,12 @@ public class CheckoutController {
                                  Principal principal) {
         if (principal != null) {
             if (orderId.startsWith("order_")) {
-                model.addAttribute("orderPlacedPageInfo", orderId.substring(6));
+                PaymentRecords paymentRecord = this.paymentRecordsRepository.getByOrderId(orderId);
+                if (paymentRecord == null) {
+                    model.addAttribute("badRequest", "");
+                } else {
+                    model.addAttribute("orderPlacedPageInfo", orderId.substring(6));
+                }
             } else {
                 model.addAttribute("badRequest", "");
             }
