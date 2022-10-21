@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--bootstrap javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+            integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+            integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+            crossorigin="anonymous"></script>
+    <!--other javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+    <title>Admin - All categories</title>
+</head>
+
+<body>
+<div class="admin-dashboard-sidebar">
+    <a href="/admin/dashboard">Dashboard</a>
+    <a class="active" href="/admin/manage-categories">Manage Categories</a>
+    <a href="/admin/manage-products">Manage Products</a>
+    <a href="/admin/pending-deliveries">Pending Deliveries</a>
+    <a href="/admin/delivered-orders">Delivered Orders</a>
+    <a href="/admin/edit-profile">Edit Profile</a>
+    <a href="#" id="admin-logout" onclick="adminLogout()">Logout</a>
+</div>
+
+<div class="admin-dashboard-content mt-2">
+    <div class="marquee">
+        <p th:text="${time} + ', ' + ${currentlyLoggedInAdmin.name}"></p>
+    </div>
+
+    <!--        <div class="admin-dashboard-manage-categories">-->
+    <div class="admin-dashboard-manage-categories">
+        <div th:each="category : ${session.categories}">
+
+            <div class="card categories-card">
+                <img src="" th:src="${category.picture}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title text-center" th:text="${category.name}"></h5>
+                    <p class="card-text text-center" th:if="${category.description.length() > 75}"
+                       th:text="${category.description.substring(0,76)} + '...'"></p>
+                    <p class="card-text text-center" th:if="${category.description.length() <= 75}"
+                       th:text="${category.description}"></p>
+                    <button type="button" class="btn btn-success edit-cat-button mt-2"
+                            th:data-categoryName="${category.name}"
+                            th:data-categoryDescription="${category.description}"
+                            th:data-categoryPicture="${category.picture}"
+                            onclick="updateCategory(
+                                this.getAttribute('data-categoryName'),
+                                this.getAttribute('data-categoryDescription'),
+                                this.getAttribute('data-categoryPicture')
+                                )">Edit Category
+                    </button>
+                    <button type="button" class="btn btn-danger mt-2 delete-cat-button"
+                            th:data-categoryName="${category.name}"
+                            onclick="showDeleteCategoryAlert(this.getAttribute('data-categoryName'))">Delete
+                        Category
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit category Modal -->
+<div class="modal fade signup-modal" id="edit-category-modal" tabindex="-1" data-bs-backdrop="static"
+     aria-hidden="true">
+    <div class="modal-dialog signup-modal">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #8D3DAF">
+                <h4 class="modal-title" style="color: #fff">Edit Category</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="edit-category-modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- snackbar -->
+<div th:if="${session.deleteCategoryResponse}">
+    <div id="snackbar" th:text="${session.deleteCategoryResponse.message}"></div>
+    <script>
+        const x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 5000);
+    </script>
+    <th:block th:text="${#session.removeAttribute('deleteCategoryResponse')}"/>
+</div>
+<div th:if="${session.editCategoryResponse}">
+    <div id="snackbar" th:text="${session.editCategoryResponse.message}"></div>
+    <script>
+        const x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 5000);
+    </script>
+    <th:block th:text="${#session.removeAttribute('editCategoryResponse')}"/>
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+<script th:src="@{/js/admin.js}"></script>
+</body>
+
+</html>

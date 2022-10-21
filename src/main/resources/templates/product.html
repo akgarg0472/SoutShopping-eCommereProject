@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--bootstrap javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+            integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+            integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title th:text="${title}">Product</title>
+</head>
+
+<body>
+<!--navbar-->
+<section th:insert="navbar :: navbar"></section>
+
+<section class="product-section">
+    <div class="container mt-3 product-container">
+        <div class="row">
+            <!-- product image -->
+            <div class="col-md-5 product-image-container" style="border-right: 1px solid #e2e2e2">
+                <img class="product-image" src="" th:src="${productInfo.picture}">
+
+                <div class="text-center mb-2">
+                    <button type="button" th:if="${productInfo.totalQuantities>0}" id="add-to-cart-button"
+                            class="btn btn-danger my-buttons"
+                            th:data-name="${productInfo.name}"
+                            th:data-description="${productInfo.description}"
+                            th:data-originalPrice="${productInfo.originalPrice}"
+                            th:data-discountedPrice="${productInfo.discountedPrice}"
+                            th:data-totalQuantities="${1}"
+                            th:data-picture="${productInfo.picture}"
+                            th:data-category="${productInfo.category}"
+                            onclick="addToCart(
+                                {
+                                    name:this.getAttribute('data-name'),
+                                    description:this.getAttribute('data-description'),
+                                    originalPrice:this.getAttribute('data-originalPrice'),
+                                    discountedPrice:this.getAttribute('data-discountedPrice'),
+                                    totalQuantities:this.getAttribute('data-totalQuantities'),
+                                    picture:this.getAttribute('data-picture'),
+                                    category:this.getAttribute('data-category')
+                                }
+                                )">Add to cart
+                    </button>
+                    <button type="button" th:if="${productInfo.totalQuantities>0}" id="buy-product-button"
+                            class="btn btn-primary my-buttons mt-1"
+                            th:data-name="${productInfo.name}"
+                            th:data-description="${productInfo.description}"
+                            th:data-originalPrice="${productInfo.originalPrice}"
+                            th:data-discountedPrice="${productInfo.discountedPrice}"
+                            th:data-totalQuantities="${1}"
+                            th:data-picture="${productInfo.picture}"
+                            th:data-category="${productInfo.category}"
+                            onclick="buyProduct(
+                                {
+                                    name: this.getAttribute('data-name'),
+                                    description: this.getAttribute('data-description'),
+                                    originalPrice: this.getAttribute('data-originalPrice'),
+                                    discountedPrice: this.getAttribute('data-discountedPrice'),
+                                    totalQuantities: this.getAttribute('data-totalQuantities'),
+                                    picture: this.getAttribute('data-picture'),
+                                    category: this.getAttribute('data-category')
+                                }
+                                )">Buy Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product information -->
+            <div class="col-md-6">
+                <!-- breadcrumb of product landing-->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" th:href="'/category/' + ${productInfo.category}"
+                                                       th:text="${productInfo.category}"></a></li>
+                        <li th:if="${productInfo.name.length()<=15}" class="breadcrumb-item active" aria-current="page"
+                            th:text="${productInfo.name}"></li>
+                        <li th:if="${productInfo.name.length()>15}" class="breadcrumb-item active" aria-current="page"
+                            th:text="${productInfo.name.substring(0,16)}"></li>
+                    </ol>
+                </nav>
+                <p class="product-name" th:text="${productInfo.name}"></p>
+                <br>
+
+                <div th:if="${productInfo.getTotalQuantities() > 0}">
+                <span class="product-price"
+                      th:text="'&#8377;' + ${productInfo.discountedPrice}">
+                </span>
+                    <span class="product-original-price" th:text="${'&#8377;' + productInfo.originalPrice}"></span>
+                    <span class="ms-2 offer"
+                          th:text="${((productInfo.originalPrice - productInfo.discountedPrice) * 100)/productInfo.originalPrice} + '% off'"></span>
+                    <hr>
+                </div>
+
+                <div th:if="${productInfo.getTotalQuantities() <= 0}" class="mb-2">
+                    <span class="product-price text-danger"><strong>OUT OF STOCK</strong></span>
+                </div>
+
+                <div class="available-offers">
+                    <span class="heading">Offers</span>
+                    <ul class="offers-list">
+                        <li><strong>SBI Card offer </strong>Flat 10% discount on credit card payment</li>
+                        <li><strong>UPI Offer </strong>100&#8377; cashback on UPI payment</li>
+                        <li><strong>2% extra discount </strong>on payment using gold coins</li>
+                    </ul>
+                    <span class="offers-list">
+                        <a href="#">More offers (if available)</a>
+                    </span>
+                </div>
+                <hr>
+                <h5>Description</h5>
+                <p th:utext="${productInfo.description}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container user-reviews-section">
+        <div class="review-summary">
+            <h4>User Reviews</h4>
+            <span th:if="${starsOutOf <= 0}">
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            </span>
+
+            <span th:if="${starsOutOf > 0 && starsOutOf < 1.5}">
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            </span>
+            <span th:if="${starsOutOf >= 1.5 && starsOutOf < 2.5}">
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            </span>
+            <span th:if="${starsOutOf >= 2.5 && starsOutOf < 3.5}">
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            </span>
+            <span th:if="${starsOutOf >= 3.5 && starsOutOf < 4.5}">
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            </span>
+            <span th:if="${starsOutOf >= 4.5}">
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+                <i style="color: goldenrod" class="fa fa-star"></i>
+            </span>
+            <span th:utext="'&nbsp;' + ${starsOutOf} + ' out of 5.0'"></span>
+
+            <br>
+
+            <h5 style="margin: 10px 0 10px 0; font-size: 16px;" th:text="${totalReviewsCount} + ' total reviews'"></h5>
+            <!--            1 start review-->
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <span th:utext="'&nbsp;' + ${oneStarPercentage} + ' %'"></span>
+            <br>
+
+            <!--            2 start review-->
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <span th:utext="'&nbsp;' + ${twoStarPercentage} + ' %'"></span>
+            <br>
+
+            <!--            3 start review-->
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <span th:utext="'&nbsp;' + ${threeStarPercentage} + ' %'"></span>
+            <br>
+
+            <!--            4 start review-->
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+            <span th:utext="'&nbsp;' + ${fourStarPercentage} + ' %'"></span>
+            <br>
+
+            <!--            5 start review-->
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <i style="color: goldenrod" class="fa fa-star"></i>
+            <span th:utext="'&nbsp;' + ${fiveStarPercentage} + ' %'"></span>
+        </div>
+        <div class="write-review-section">
+            <h4 class="text-center">Write your review</h4>
+            <form action="/add-review" method="post" id="add-review-form">
+                <input type="hidden" th:value="${productInfo.name}" readonly id="product-name">
+                <select class="form-select mt-3" id="ur-star" style="width: 80%;" aria-label="">
+                    <option selected value="0">Select your ratings</option>
+                    <option value="1">1 star</option>
+                    <option value="2">2 star</option>
+                    <option value="3">3 star</option>
+                    <option value="4">4 star</option>
+                    <option value="5">5 star</option>
+                </select>
+                <textarea class="form-control mt-2" id="ta-review" placeholder="Enter your review here"
+                          rows="3"></textarea>
+                <div class="text-center mt-2">
+                    <button type="submit" class="btn  btn-outline-success">Post Review</button>
+                </div>
+            </form>
+            <hr>
+        </div>
+
+        <div th:if="${userReviews.size() == 0}">
+            <div class="user-review">
+                <h5>No user reviews found</h5>
+            </div>
+        </div>
+
+        <div th:if="${userReviews.size() > 0}">
+            <div th:each="review : ${userReviews}">
+                <div class="user-review">
+                    <h5 th:text="${review.userName}"></h5>
+
+                    <div th:if="${review.ratingStar == 1}">
+                        <div style="display: flex">
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div th:if="${review.ratingStar == 2}">
+                        <div style="display: flex">
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div th:if="${review.ratingStar == 3}">
+                        <div style="display: flex">
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div th:if="${review.ratingStar == 4}">
+                        <div style="display: flex">
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: #d7d7d7;" class="fa fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div th:if="${review.ratingStar == 5}">
+                        <div style="display: flex">
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                            <i style="color: goldenrod" class="fa fa-star"></i>
+                        </div>
+                    </div>
+
+                    <p class="mt-1" th:text="${review.reviewMessage}"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<div class="product-loader" id="product-loader">
+    <div class="text-center center-loader-div mt-4">
+        <div class="product-p-loader"></div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <div class="item">
+        <h3>Connect with us</h3>
+        <ul>
+            <li><a href="https://www.linkedin.com/in/akgarg0472/" target="_blank">Linkedin</a></li>
+            <li><a href="https://github.com/akgarg0472" target="_blank">GitHub</a></li>
+            <li><a href="https://www.instagram.com/akgarg0407/" target="_blank">Instagram</a></li>
+            <li><a href="https://twitter.com/akgarg0472" target="_blank">Twitter</a></li>
+        </ul>
+    </div>
+
+    <div class="item">
+        <h3>Get to know us</h3>
+        <ul>
+            <li><a href="#" onclick="alert('About us')">About us</a></li>
+            <li><a href="#" onclick="alert('Press release')">Press release</a></li>
+            <li><a href="mailto:akgarg0472@gmail.com">Get in touch</a></li>
+        </ul>
+    </div>
+    <div class="item">
+        <h3>Links</h3>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Your Account</a></li>
+            <li><a href="#" onclick="alert('Help')">Help</a></li>
+            <li><a href="#" onclick="alert('Terms & Conditions')">Terms & Conditions</a></li>
+            <li><a href="#" onclick="alert('FAQs')">FAQs</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script th:src="@{/js/script.js}"></script>
+<script th:src="@{/js/user.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--bootstrap javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+            integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+            integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+    <title>Buy Product</title>
+</head>
+
+<body>
+<!--navbar-->
+<section th:insert="navbar :: navbar"></section>
+
+<h1>Buy product page</h1>
+
+<section>
+    <div th:if="${buyProductInfo != null}">
+        <div class="checkout-page-heading mt-2">
+            <h3>Thank you for shopping with us.
+                <br>
+                Please confirm your shipping details and make payment to complete your order
+            </h3>
+        </div>
+
+        <div class="mt-4 checkout">
+            <div class="shipping-info-section">
+                <h5 class="checkout-ship-info-head">Shipping Details</h5>
+                <div class="shipping-address">
+                    <h5 th:text="${buyProductInfo.name}"></h5>
+                </div>
+                <div class="shipping-address">
+                    <span th:text="${buyProductInfo.email}"></span>
+                </div>
+                <hr style="margin: 8px 0;">
+                <div class="shipping-address">
+                    <span th:utext="'<strong>Address: </strong>' + ${buyProductInfo.address}"></span>
+                </div>
+                <hr style="margin: 8px 0;">
+                <div class="shipping-address">
+                    <span th:utext="'<strong>City: </strong>' + ${buyProductInfo.city}"></span>
+                </div>
+                <hr style="margin: 8px 0;">
+                <div class="shipping-address">
+                    <span th:utext="'<strong>Zipcode: </strong>' + ${buyProductInfo.zipCode}"></span>
+                </div>
+                <hr style="margin: 8px 0;">
+                <div class="shipping-address">
+                    <span th:utext="'<strong>State: </strong>' + ${buyProductInfo.state}"></span>
+                </div>
+                <hr style="margin: 8px 0;">
+                <div class="shipping-address mb-2">
+                    <span th:utext="'<strong>Country: </strong>' + ${buyProductInfo.country}"></span>
+                </div>
+                <button class="btn btn-danger mt-2" style="border-radius: 0;"
+                        onclick="window.location = '/user/update-profile'">Edit shipping Details
+                </button>
+            </div>
+
+            <div class="payment-info-section">
+                <h5 class="checkout-payment-info-head">Payment Details</h5>
+
+                <span class="order-summary">Order Summary</span>
+                <hr style="margin: 8px 0;">
+
+                <div class="payment-detail">
+                    <span class="payment-text"><strong>Order amount</strong></span>
+                    <span class="payment-text" th:utext="'&#x20B9;' + ${buyProductInfo.orderPrice}"></span>
+                </div>
+
+                <div class="payment-detail">
+                    <span class="payment-text"><strong>Discount</strong></span>
+                    <span class="payment-text"
+                          th:utext="'&#x20B9;' + ${buyProductInfo.orderPrice - buyProductInfo.discountPrice}"></span>
+                </div>
+
+                <hr style="margin: 8px 0;">
+
+                <div class="payment-detail">
+                    <span class="payment-text"><strong>Order Total</strong></span>
+                    <span class="payment-text" th:utext="'&#x20B9;' + ${buyProductInfo.discountPrice}"></span>
+                </div>
+
+                <div style="display:flex; align-items: center;justify-content: center;">
+                    <button class="mt-4 make-payment-button" th:data-paymentAmount="${buyProductInfo.discountPrice}"
+                            onclick="initiatePayment(this.getAttribute('data-paymentAmount'))" id="make-payment-button">
+                        Make Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div class="screen-center-loader" id="order-loader">
+    <div class="text-center center-loader-div mt-4">
+        <div class="order-loader"></div>
+        <h4 class="mt-2" style="color: #fff">Processing</h4>
+    </div>
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+<script th:src="@{/js/user.js}"></script>
+<script th:src="@{/js/payment.js}"></script>
+
+<script>
+    $(document).ready(() => {
+        $("#order-loader").css('display', 'none');
+    })
+</script>
+</body>
+
+</html>

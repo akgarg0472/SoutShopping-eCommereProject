@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--bootstrap javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+            integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+            integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+    <title>My profile</title>
+</head>
+
+<body>
+<!--navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">SoutShopping</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="product-search me-auto ms-auto">
+                    <div class="form-outline" style="width: 100%">
+                        <input id="home-search-input" type="search" class="form-control my-search-bar"
+                               placeholder="Search Product">
+                    </div>
+                </div>
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/cart">
+                        <i class="fa fa-shopping-cart"></i> My Cart
+                        <span id="total-cart-items">0</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link navbar-link active" aria-current="page" href="/user/dashboard"
+                       th:if="${isUserLoggedIn.name.length() > 20}"
+                       th:text="${isUserLoggedIn.name.substring(0,20)}"></a>
+                <li class="nav-item">
+                    <a class="nav-link navbar-link active" aria-current="page" href="/user/dashboard"
+                       th:text="${isUserLoggedIn.name}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link navbar-link active" aria-current="page" href="/user/logout">Logout</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<div class="user-sidebar-section">
+    <ul>
+        <li onclick="navigate('/user/dashboard')">
+            <a href="/user/dashboard">
+                <i class="fa fa-columns"></i>&emsp; Dashboard
+            </a>
+        </li>
+
+        <li onclick="navigate('/user/my-orders')">
+            <a href="/user/my-orders">
+                <i class="fa fa-shopping-cart"></i>&emsp; My Orders
+            </a>
+        </li>
+
+        <li onclick="navigate('/user/purchase-history')">
+            <a href="/user/purchase-history">
+                <i class="fa fa-shopping-bag"></i>&emsp; Purchase History
+            </a>
+        </li>
+
+        <li class="user-sidebar-active" onclick="navigate('/user/my-profile')">
+            <a style="color: #fff;" href="/user/my-profile">
+                <i class="fa fa-user fa-lg"></i>&emsp; My Profile
+            </a>
+        </li>
+
+        <li onclick="navigate('/user/update-profile')">
+            <a href="/user/update-profile">
+                <i class="fa fa-edit"></i>&emsp; Update Profile
+            </a>
+        </li>
+
+        <li onclick="navigate('/user/shipping-info')">
+            <a href="/user/shipping-info">
+                <i class="fa fa-address-card"></i>&emsp;Shipping Details
+            </a>
+        </li>
+
+        <li onclick="navigate('/user/logout')">
+            <a href="/user/logout">
+                <i class="fa fa-sign-out"></i>&emsp; Logout
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="user-dashboard-section">
+    <div class="container text-center mt-2">
+        <h2 class="mt-2" style="color: white">My Profile</h2>
+
+        <div class="user-profile">
+
+            <img class="mt-1 mb-2 user-profile-picture" src=""
+                 th:src="${currentlyLoggedInUser.profilePicture}"
+                 th:alt="'Profile picture of ' + ${currentlyLoggedInUser.name}" alt="">
+
+            <div class="mt-2">
+                <input type="text" class="form-control user-profile-inputs" placeholder="Name"
+                       th:value="${currentlyLoggedInUser.name}" readonly>
+            </div>
+
+            <div class="mt-1">
+                <input type="email" class="form-control user-profile-inputs" placeholder="Email"
+                       th:value="${currentlyLoggedInUser.email}" readonly>
+            </div>
+
+            <div class="mt-1">
+                <input type="text" class="form-control user-profile-inputs" placeholder="Phone #"
+                       th:value="${currentlyLoggedInUser.phone}" readonly>
+            </div>
+
+            <div class="mt-1">
+                <input type="text" class="form-control user-profile-inputs" placeholder="Address"
+                       th:value="${currentlyLoggedInUser.address}" readonly>
+            </div>
+
+            <div class="mt-1">
+                <input type="text" class="form-control user-profile-inputs" placeholder="City"
+                       th:value="${currentlyLoggedInUser.city}" readonly>
+            </div>
+
+            <div class="mt-1">
+                <input type="text" class="form-control user-profile-inputs" placeholder="State"
+                       th:value="${currentlyLoggedInUser.state}" readonly>
+            </div>
+
+            <div class="mt-1">
+                <input type="text" class="form-control user-profile-inputs" placeholder="Country"
+                       th:value="${currentlyLoggedInUser.city}" readonly>
+            </div>
+
+            <div class="mt-1">
+                <input type="text" class="form-control user-profile-inputs" placeholder="Zipcode"
+                       th:value="${currentlyLoggedInUser.zipcode}" readonly>
+            </div>
+
+            <button class="btn btn-danger mt-2 user-profile-button" data-bs-toggle="modal"
+                    data-bs-target="#change-pass-modal">Change Password
+            </button>
+
+            <button class="btn btn-primary mt-2 user-profile-button" onclick="window.location = '/user/update-profile'">
+                Update Profile
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Change password Modal -->
+<div class="modal fade" id="change-pass-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Change Password</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form method="post" action="/user/update-password">
+                    <div>
+                        <input type="password" minlength="8" class="form-control" id="current-password"
+                               name="current-password" placeholder="Enter current password">
+                    </div>
+                    <div class="mt-2">
+                        <input type="password" minlength="8" class="form-control" id="new-password" name="new-password"
+                               placeholder="Enter new password">
+                    </div>
+                    <div class="mt-2">
+                        <input type="password" minlength="8" class="form-control" id="confirm-new-password"
+                               name="confirm-new-password" placeholder="Confirm new password">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2 my-submit-button">Update Password</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--password update status snackbar-->
+<div th:if="${session.userPasswordUpdateResponse}">
+    <div id="snackbar" th:text="${session.userPasswordUpdateResponse.message}"></div>
+    <script>
+        const x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 5000);
+    </script>
+    <th:block th:text="${#session.removeAttribute('userPasswordUpdateResponse')}"/>
+</div>
+
+
+<script th:src="@{/js/user.js}"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+
+</html>

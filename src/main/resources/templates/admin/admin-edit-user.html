@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--bootstrap javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+            integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+            integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+            crossorigin="anonymous"></script>
+    <!--other javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+    <title>Admin - Edit user</title>
+</head>
+
+<body>
+<section>
+    <div class="container">
+        <form action="/admin/processUpdateUserDetails" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input type="text" class="form-control" name="name" th:value="${adminEditUser.name}" readonly>
+            </div>
+            <div class="mb-3">
+                <input type="email" class="form-control" name="email" th:value="${adminEditUser.email}" readonly
+                       aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" name="role" th:value="${adminEditUser.role}"
+                       aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                Account enabled
+                <span th:if="${adminEditUser.enabled}">
+                    <input class="form-check-input" type="radio" name="isEnabled" value="enabled" checked>Enabled
+                </span>
+                <span th:if="${!adminEditUser.enabled}">
+                    <input class="form-check-input" type="radio" name="isEnabled" value="enabled">Enabled
+                </span>
+
+                <span th:if="${!adminEditUser.enabled}">
+                    <input class="form-check-input" type="radio" name="isEnabled" value="disabled" checked>Disabled
+                </span>
+                <span th:if="${adminEditUser.enabled}">
+                    <input class="form-check-input" type="radio" name="isEnabled" value="disabled">Disabled
+                </span>
+            </div>
+            <div class="mb-3">
+                account not locked
+                <span th:if="${adminEditUser.accountNonLocked}">
+                    <input class="form-check-input" type="radio" name="accountNonLocked" value="not locked" checked>Not locked
+                </span>
+                <span th:if="${!adminEditUser.accountNonLocked}">
+                    <input class="form-check-input" type="radio" name="accountNonLocked" value="not locked">Not locked
+                </span>
+
+                <span th:if="${!adminEditUser.accountNonLocked}">
+                    <input class="form-check-input" type="radio" name="accountNonLocked" value="locked" checked>locked
+                </span>
+                <span th:if="${adminEditUser.accountNonLocked}">
+                    <input class="form-check-input" type="radio" name="accountNonLocked" value="locked">locked
+                </span>
+            </div>
+            <button type="submit" class="btn btn-primary">Update user</button>
+        </form>
+        p
+        <div class="container text-center">
+            <br>
+            <a th:href="'/admin/delete-user/' + ${adminEditUser.email}" class="btn btn-danger">Delete user</a>
+        </div>
+    </div>
+</section>
+</body>
+
+</html>
