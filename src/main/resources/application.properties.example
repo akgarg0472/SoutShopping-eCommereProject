@@ -1,0 +1,22 @@
+#database configuration
+spring.datasource.name=
+spring.datasource.driver-class-name=
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=
+spring.jpa.properties.hibernate.dialect=
+spring.datasource.hikari.maxLifeTime=
+
+# email configs
+email.auth-username=
+email.auth-password=
+
+# firebase configs
+firebase.json.config.path=<your-firebase-project-secret-json-path>
+firebase.storage.blob.bucked.id=<your-project-bucket-id>
+firebase.storage.media.base-url=https://firebasestorage.googleapis.com/v0/b/<your-project-bucket-id>/o/%s?alt=media
+
+# razorpay config
+razorpay.key=
+razorpay.secret=

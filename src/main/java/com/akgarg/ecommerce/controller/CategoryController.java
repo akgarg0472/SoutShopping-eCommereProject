@@ -24,8 +24,7 @@ public class CategoryController {
 
     @ModelAttribute
     public void checkLoginStatus(
-            final Principal principal,
-            final Model model
+            final Principal principal, final Model model
     ) {
         if (principal == null) {
             model.addAttribute("isUserLoggedIn", null);
@@ -37,26 +36,26 @@ public class CategoryController {
     }
 
     /*  Admin Category APIs */
-    @RequestMapping(value = "/admin/add-category", method = RequestMethod.POST)
+    @PostMapping(value = "/admin/add-category")
     public String addCategory(
             @ModelAttribute Category category, @RequestParam("image") MultipartFile image, HttpSession session
     ) {
         return this.categoryService.addCategory(category, image, session);
     }
 
-    @RequestMapping(value = "/admin/manage-categories", method = RequestMethod.GET)
+    @GetMapping(value = "/admin/manage-categories")
     public String manageCategories(HttpSession session, Principal principal, Model model) {
         return this.categoryService.manageCategories(session, principal, model);
     }
 
-    @RequestMapping(value = "/admin/edit-category", method = RequestMethod.POST)
+    @PostMapping(value = "/admin/edit-category")
     public String updateCategory(
             @ModelAttribute Category category, @RequestParam("image") MultipartFile image, HttpSession session
     ) {
         return this.categoryService.updateCategory(category, image, session);
     }
 
-    @RequestMapping(value = "/admin/delete-category/{category}", method = RequestMethod.GET)
+    @GetMapping(value = "/admin/delete-category/{category}")
     public String deleteCategory(@PathVariable("category") String categoryToRemove, HttpSession session) {
         return this.categoryService.deleteCategory(categoryToRemove, session);
     }
@@ -64,9 +63,7 @@ public class CategoryController {
     /* Public Category APIs */
     @RequestMapping("/category/{categoryName}")
     public String showCategoryProducts(
-            @PathVariable("categoryName") String categoryName,
-            Model model,
-            HttpSession session
+            @PathVariable("categoryName") String categoryName, Model model, HttpSession session
     ) {
         return this.productService.getProductsOfSpecificCategory(categoryName, model, session);
     }

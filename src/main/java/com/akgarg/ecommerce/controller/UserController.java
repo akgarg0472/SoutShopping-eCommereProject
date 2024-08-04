@@ -21,8 +21,7 @@ public class UserController {
 
     @ModelAttribute
     public void checkLoginStatus(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         if (principal == null) {
             model.addAttribute("isUserLoggedIn", null);
@@ -33,17 +32,16 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    @GetMapping(value = "/dashboard")
     public String dashboard(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         this.userService.dashboard(principal, model);
 
         return "user/dashboard";
     }
 
-    @RequestMapping(value = "/process-update-profile", method = RequestMethod.POST)
+    @PostMapping(value = "/process-update-profile")
     public String updateUserProfile(
             @ModelAttribute User user,
             @RequestParam("image") MultipartFile image,
@@ -51,68 +49,57 @@ public class UserController {
             Model model,
             Principal principal
     ) {
-        this.userService.updateUserProfile(
-                user,
-                image,
-                session,
-                model,
-                principal
-        );
+        this.userService.updateUserProfile(user, image, session, model, principal);
 
         return "redirect:/user/update-profile";
     }
 
-    @RequestMapping(value = "/my-orders", method = RequestMethod.GET)
+    @GetMapping(value = "/my-orders")
     public String myOrders(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         this.userService.userOrders(principal, model);
 
         return "user/my-orders";
     }
 
-    @RequestMapping(value = "/purchase-history", method = RequestMethod.GET)
+    @GetMapping(value = "/purchase-history")
     public String purchaseHistory(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         this.userService.purchaseHistory(principal, model);
 
         return "user/purchase-history";
     }
 
-    @RequestMapping(value = "/my-profile", method = RequestMethod.GET)
+    @GetMapping(value = "/my-profile")
     public String myProfile(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         this.userService.profile(principal, model);
 
         return "user/my-profile";
     }
 
-    @RequestMapping(value = "/shipping-info", method = RequestMethod.GET)
+    @GetMapping(value = "/shipping-info")
     public String shippingDetails(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         this.userService.shippingInfo(principal, model);
 
         return "user/shipping-info";
     }
 
-    @RequestMapping(value = "/update-profile", method = RequestMethod.GET)
+    @GetMapping(value = "/update-profile")
     public String updateProfile(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         this.userService.updateProfile(principal, model);
 
         return "user/update-profile";
     }
 
-    @RequestMapping(value = "/update-password", method = RequestMethod.POST)
+    @PostMapping(value = "/update-password")
     public String updatePassword(
             @RequestParam("current-password") String currentPassword,
             @RequestParam("new-password") String newPassword,
@@ -126,29 +113,27 @@ public class UserController {
         return "redirect:/user/my-profile";
     }
 
-    @RequestMapping(value = "/getUserCartItem", method = RequestMethod.GET)
+    @GetMapping(value = "/getUserCartItem")
     public ResponseEntity<?> getUserCartItems(Principal principal) {
         return this.userService.userCartItems(principal);
     }
 
-    @RequestMapping(value = "/add-cart-item", method = RequestMethod.POST)
-    public ResponseEntity<?> addItemInUserCart(
+    @PostMapping(value = "/add-cart-item")
+    public ResponseEntity<Boolean> addItemInUserCart(
             @RequestParam("name") String productName,
             @RequestParam("originalPrice") String originalPrice,
             @RequestParam("discountedPrice") String discountedPrice,
             @RequestParam("totalQuantities") String totalQuantities,
             Principal principal
     ) {
-        return this.userService.addItemInUserCart(productName, originalPrice, discountedPrice, totalQuantities, principal);
+        return this.userService.addItemInUserCart(productName, discountedPrice, totalQuantities, principal);
     }
 
-    @RequestMapping(value = "/delete-cart-order/{orderId}", method = RequestMethod.GET)
+    @GetMapping(value = "/delete-cart-order/{orderId}")
     public String deleteCartItem(
-            @PathVariable("orderId") String id,
-            Principal principal,
-            Model model
+            @PathVariable("orderId") String id, Principal principal, Model model
     ) {
-        this.userService.deleteCartItem(id, principal, model);
+        this.userService.deleteCartItem(id, principal);
 
         return "redirect:/cart";
     }
@@ -158,7 +143,7 @@ public class UserController {
         return this.userService.buyProduct(session, model, principal);
     }
 
-    @RequestMapping(value = "/process-buy-product", method = RequestMethod.POST)
+    @PostMapping(value = "/process-buy-product")
     public ResponseEntity<Boolean> processBuyProduct(
             @RequestParam("name") String productName,
             @RequestParam("originalPrice") String orderPrice,
@@ -170,7 +155,7 @@ public class UserController {
         return this.userService.processBuyProduct(productName, orderPrice, discountPrice, tQuantity, principal, session);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @GetMapping(value = "/logout")
     public String logout() {
         return "redirect:/logout";
     }

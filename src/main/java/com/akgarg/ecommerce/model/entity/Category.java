@@ -13,13 +13,13 @@ import java.util.List;
 public class Category {
 
     @Id
-    @Column(name = "category_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "category_description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "category_picture")
+    @Column(name = "picture")
     private String picture;
 
     @OneToMany

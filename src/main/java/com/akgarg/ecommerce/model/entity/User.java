@@ -20,54 +20,56 @@ import java.util.List;
 public class User {
 
     @Id
-    @Column(name = "user_email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "user_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "user_password")
+    @Column(name = "password")
+    @ToString.Exclude
     private String password;
 
-    @Column(name = "user_phone")
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "user_address")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "user_city")
+    @Column(name = "city")
     private String city;
 
-    @Column(name = "user_state")
+    @Column(name = "state")
     private String state;
 
-    @Column(name = "user_country")
+    @Column(name = "country")
     private String country;
 
-    @Column(name = "user_zipcode")
+    @Column(name = "zipcode")
     private int zipcode;
 
-    @Column(name = "user_profile_picture")
+    @Column(name = "profile_picture")
     private String profilePicture;
 
-    @Column(name = "user_role")
+    @Column(name = "role")
     private String role;
 
-    @Column(name = "user_account_not_expired")
+    @Column(name = "account_not_expired")
     private boolean accountNonExpired;
 
-    @Column(name = "user_account_not_locked")
+    @Column(name = "account_not_locked")
     private boolean accountNonLocked;
 
-    @Column(name = "user_credentials_not_expired")
+    @Column(name = "credentials_not_expired")
     private boolean credentialsNonExpired;
 
-    @Column(name = "user_enabled")
+    @Column(name = "enabled")
     private boolean enabled;
 
-    @Column(name = "user_cart")
+    @Column(name = "cart")
     @OneToMany
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @ToString.Exclude
     private List<Orders> cart = new ArrayList<>();
 
     public User(

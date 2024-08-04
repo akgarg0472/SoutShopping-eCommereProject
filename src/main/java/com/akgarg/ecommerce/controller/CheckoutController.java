@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 
@@ -23,8 +23,7 @@ public class CheckoutController {
 
     @ModelAttribute
     public String checkLoginStatus(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         if (principal == null) {
             model.addAttribute("isUserLoggedIn", null);
@@ -40,24 +39,21 @@ public class CheckoutController {
 
     @RequestMapping("/checkout")
     public String checkout(
-            Principal principal,
-            Model model
+            Principal principal, Model model
     ) {
         return this.checkoutService.checkout(principal, model);
     }
 
-    @RequestMapping(value = "/order-confirmed/{orderId}", method = RequestMethod.GET)
-    public String orderConfirmed(
-            @PathVariable("orderId") String orderId,
-            Model model,
-            Principal principal
-    ) {
-        return this.checkoutService.confirmOrder(orderId, model, principal);
-    }
-
-    @RequestMapping(value = "/checkout/isUserLoggedIn", method = RequestMethod.GET)
+    @GetMapping(value = "/checkout/isUserLoggedIn")
     public ResponseEntity<Boolean> isUserLoggedIn(Principal principal) {
         return ResponseEntity.ok(principal != null);
+    }
+
+    @GetMapping(value = "/order-confirmed/{orderId}")
+    public String orderConfirmed(
+            @PathVariable("orderId") String orderId, Model model, Principal principal
+    ) {
+        return this.checkoutService.confirmOrder(orderId, model, principal);
     }
 
 }

@@ -36,14 +36,14 @@ public class ProductController {
     }
 
     /* Admin Product APIs */
-    @RequestMapping(value = "/admin/add-product", method = RequestMethod.POST)
+    @PostMapping(value = "/admin/add-product")
     public String addProduct(
             @ModelAttribute Product product, @RequestParam("image") MultipartFile image, HttpSession session
     ) {
         return this.productService.addProduct(product, image, session);
     }
 
-    @RequestMapping(value = "/admin/delete-product/{product}", method = RequestMethod.GET)
+    @GetMapping(value = "/admin/delete-product/{product}")
     public String deleteProduct(@PathVariable("product") String productInfo, HttpSession session) {
         return this.productService.deleteProduct(productInfo, session);
     }
@@ -60,7 +60,7 @@ public class ProductController {
         return this.productService.searchProducts(searchKeyword, model, principal);
     }
 
-    @RequestMapping(value = "/admin/edit-product/{productName}", method = RequestMethod.POST)
+    @PostMapping(value = "/admin/edit-product/{productName}")
     public String updateProduct(
             @PathVariable("productName") String previousProductName,
             @ModelAttribute Product product,
@@ -77,10 +77,10 @@ public class ProductController {
             @PathVariable("product") String productName,
             Model model
     ) {
-        return this.productService.showProduct(categoryName, productName, model);
+        return this.productService.showProduct(productName, model);
     }
 
-    @RequestMapping(value = "/add-review", method = RequestMethod.POST)
+    @PostMapping(value = "/add-review")
     public ResponseEntity<?> addReview(
             @RequestParam("pName") String productName,
             @RequestParam("review") String review,

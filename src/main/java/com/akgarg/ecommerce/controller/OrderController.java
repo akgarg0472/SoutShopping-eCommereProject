@@ -4,9 +4,9 @@ import com.akgarg.ecommerce.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -22,7 +22,7 @@ public class OrderController {
     private final OrderService orderService;
 
     /* Admin order APIs */
-    @RequestMapping(value = "/admin/delivered-orders", method = RequestMethod.GET)
+    @GetMapping(value = "/admin/delivered-orders")
     public String deliveredOrders(
             Principal principal,
             Model model
@@ -30,7 +30,7 @@ public class OrderController {
         return this.orderService.getDeliveredOrders(principal, model);
     }
 
-    @RequestMapping(value = "/admin/delivered-orders/search/{orderId}", method = RequestMethod.GET)
+    @GetMapping(value = "/admin/delivered-orders/search/{orderId}")
     public String searchDeliveredOrders(
             @PathVariable("orderId") String orderDetail,
             Principal principal,

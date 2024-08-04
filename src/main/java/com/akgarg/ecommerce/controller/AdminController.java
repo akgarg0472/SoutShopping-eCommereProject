@@ -43,25 +43,19 @@ public class AdminController {
 
     @RequestMapping("/edit-user/{userEmail}")
     public String adminEditUser(
-            @PathVariable("userEmail") String userEmail,
-            Model model
+            @PathVariable("userEmail") String userEmail, Model model
     ) {
         return this.adminService.editUser(userEmail, model);
     }
 
-    @RequestMapping(value = "/processUpdateUserDetails", method = RequestMethod.POST)
+    @PostMapping(value = "/processUpdateUserDetails")
     public String processUpdateUserDetails(
             @RequestParam("email") String email,
             @RequestParam("role") String role,
             @RequestParam("isEnabled") String isEnabled,
             @RequestParam("accountNonLocked") String accountNonLocked
     ) {
-        return this.adminService.processUpdateUserDetails(
-                email,
-                role,
-                isEnabled,
-                accountNonLocked
-        );
+        return this.adminService.processUpdateUserDetails(email, role, isEnabled, accountNonLocked);
     }
 
     @RequestMapping("/delete-user/{email}")
@@ -69,12 +63,12 @@ public class AdminController {
         return this.adminService.deleteUser(email);
     }
 
-    @RequestMapping(value = "/edit-profile", method = RequestMethod.GET)
+    @GetMapping(value = "/edit-profile")
     public String updateProfile(Model model, Principal principal) {
         return this.adminService.updateProfile(model, principal);
     }
 
-    @RequestMapping(value = "/process-profile-update", method = RequestMethod.POST)
+    @PostMapping(value = "/process-profile-update")
     public String processUpdateProfile(
             @ModelAttribute User newAdminInformation,
             @RequestParam("image") MultipartFile image,
@@ -82,17 +76,10 @@ public class AdminController {
             HttpSession session,
             Principal principal
     ) {
-        return this.adminService.processUpdateProfile(
-                newAdminInformation,
-                image,
-                model,
-                session,
-                principal
-        );
+        return this.adminService.processUpdateProfile(newAdminInformation, image, model, session, principal);
     }
 
-
-    @RequestMapping(value = "/update-password", method = RequestMethod.POST)
+    @PostMapping(value = "/update-password")
     public String updatePassword(
             @RequestParam("old-password") String oldPassword,
             @RequestParam("new-password") String newPassword,
@@ -101,17 +88,10 @@ public class AdminController {
             Model model,
             Principal principal
     ) {
-        return this.adminService.updatePassword(
-                oldPassword,
-                newPassword,
-                confirmNewPassword,
-                session,
-                model,
-                principal
-        );
+        return this.adminService.updatePassword(oldPassword, newPassword, confirmNewPassword, session, model, principal);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @GetMapping(value = "/logout")
     public String logout(HttpSession session) {
         session.setAttribute("logout", "logout");
         return "redirect:/logout";

@@ -2,6 +2,10 @@ package com.akgarg.ecommerce.utils;
 
 public final class EmailMessages {
 
+    private EmailMessages() {
+        throw new IllegalStateException("utility class");
+    }
+
     public static String forgotPasswordOTPMessage(
             final String toEmail,
             final String name,
